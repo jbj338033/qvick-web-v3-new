@@ -102,6 +102,11 @@ export default function SignupPage() {
   });
 
   function onSubmitTerms(data: TermsFormValues) {
+    if (!data.termsAccepted || !data.privacyAccepted) {
+      toast.error("모든 약관에 동의해야 합니다.");
+      return;
+    }
+
     setStep("signup");
   }
 
