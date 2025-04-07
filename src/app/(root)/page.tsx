@@ -7,7 +7,6 @@ import {
   Clock,
   Calendar,
   FileSpreadsheet,
-  ArrowUpDown,
   CheckCircle2,
   XCircle,
   Users,
@@ -41,7 +40,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
