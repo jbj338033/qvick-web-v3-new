@@ -26,7 +26,7 @@ const navigation = [
   { name: "메인 페이지", href: "/" },
   { name: "출석 인원", href: "/ckmember" },
   { name: "미출석 인원", href: "/nckmember" },
-  { name: "공지사항", href: "/announcement" },
+  { name: "공지사항", href: "/notices" },
 ];
 
 export default function Header() {
