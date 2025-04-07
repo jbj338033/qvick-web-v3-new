@@ -74,6 +74,7 @@ export default function MainPage(): React.ReactElement {
   const [attendanceFilter, setAttendanceFilter] =
     useState<AttendanceFilter>("전체");
   const [genderFilter, setGenderFilter] = useState<GenderFilter>("전체");
+  const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -99,7 +100,9 @@ export default function MainPage(): React.ReactElement {
 
   const downloadExcel = async (): Promise<void> => {
     try {
-      const response = await axios.get("/check/export/excel", {
+      setIsExcelLoading(true);
+
+      const { data } = await axios.get("/check/export/excel", {
         params: {
           date: selectedDate,
           sortBy: sortCriteria,
@@ -107,7 +110,7 @@ export default function MainPage(): React.ReactElement {
         responseType: "blob",
       });
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([data]));
       const a = document.createElement("a");
       a.href = url;
       a.download = `전체_명단_${selectedDate}.xlsx`;
@@ -117,6 +120,8 @@ export default function MainPage(): React.ReactElement {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("엑셀 다운로드 오류:", error);
+    } finally {
+      setIsExcelLoading(false);
     }
   };
 
@@ -230,10 +235,19 @@ export default function MainPage(): React.ReactElement {
 
             <Button
               onClick={downloadExcel}
-              className="bg-green-500 hover:bg-green-600 text-white h-8 px-3 gap-1.5 rounded"
+              disabled={isExcelLoading}
+              className={`bg-green-500 hover:bg-green-600 text-white h-8 px-3 gap-1.5 rounded ${
+                isExcelLoading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              <FileSpreadsheet className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline text-sm">엑셀</span>
+              {isExcelLoading ? (
+                <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-t-transparent border-white"></div>
+              ) : (
+                <FileSpreadsheet className="h-3.5 w-3.5" />
+              )}
+              <span className="hidden sm:inline text-sm">
+                {isExcelLoading ? "다운로드 중..." : "엑셀"}
+              </span>
             </Button>
           </div>
         </div>
