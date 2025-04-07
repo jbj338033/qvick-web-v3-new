@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Search, Pencil, Trash2, Plus, AlertTriangle } from "lucide-react";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 import axios from "@/lib/axios";
 import { toast } from "sonner";
 
@@ -118,6 +118,10 @@ export default function NoticesPage() {
     setActiveNoticeId(activeNoticeId === id ? null : id);
   };
 
+  const formatDate = (dateString: string) => {
+    return dayjs(dateString).format("YYYY년 MM월 DD일");
+  };
+
   const filteredNotices = notices.filter(
     (notice) =>
       notice.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -224,10 +228,7 @@ export default function NoticesPage() {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg">{notice.title}</CardTitle>
                   <CardDescription>
-                    {format(
-                      new Date(notice.createdDateTime),
-                      "yyyy년 MM월 dd일"
-                    )}
+                    {formatDate(notice.createdDateTime)}
                     {notice.writer && ` · ${notice.writer}`}
                   </CardDescription>
                 </CardHeader>
