@@ -53,22 +53,22 @@ export default function LoginPage() {
     },
   });
 
-  async function onSubmit(data: LoginFormValues) {
+  async function onSubmit(form: LoginFormValues) {
     setIsLoading(true);
 
     try {
-      const response = await axios.post<LoginResponse>(
-        `${apiUrl}/auth/sign-in`,
-        data
-      );
+      const {
+        data: { data },
+      } = await axios.post<LoginResponse>(`${apiUrl}/auth/sign-in`, form);
+
+      if (data.userRole !== "TEACHER" && data.userRole !== "ADMIN") {
+        toast.error("사감 선생님 또는 관리자만 로그인할 수 있습니다.");
+        return;
+      }
 
       useTokenStore
         .getState()
-        .setTokens(
-          response.data.data.accessToken,
-          response.data.data.refreshToken,
-          response.data.data.userRole
-        );
+        .setTokens(data.accessToken, data.refreshToken, data.userRole);
 
       toast.success("로그인 성공!");
       router.push("/");

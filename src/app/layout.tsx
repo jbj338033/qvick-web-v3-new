@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/components//providers";
-import Header from "@/components/header";
 
 const pretendard = localFont({
   src: "./fonts/PretendardVariable.woff2",
@@ -25,10 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${pretendard.variable} min-h-screen pt-16`}>
+      <body className={`${pretendard.variable}`}>
         <Providers>
-          <Header />
-          <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+          <div className="min-h-screen w-full bg-gray-50">{children}</div>
         </Providers>
       </body>
     </html>
